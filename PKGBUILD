@@ -32,11 +32,11 @@ prepare() {
     mkdir -p $srcdir/dxgkrnl-$commit_version
     mkdir -p $srcdir/dxgkrnl-$commit_version/include
     cp -r drivers/hv/dxgkrnl/. $srcdir/dxgkrnl-$commit_version/
-    cp -r include/. $srcdir/dxgkrnl-$commit_version/include/
+    cp -r include/* $srcdir/dxgkrnl-$commit_version/include/
 
     # 修改 makefile 配置
     sed -i 's/\$(CONFIG_DXGKRNL)/m/' "$srcdir/dxgkrnl-$commit_version/Makefile"
-    echo "EXTRA_CFLAGS=-I\$(PWD)/include -D_MAIN_KERNEL_" >> "$srcdir/dxgkrnl-$commit_version/Makefile"
+    echo 'ccflags-y += -I$(src)/include -D_MAIN_KERNEL_' >> "$srcdir/dxgkrnl-$commit_version/Makefile"
 
     # 创建 dkms 配置文件
     cat > $srcdir/dxgkrnl-$commit_version/dkms.conf <<EOF
